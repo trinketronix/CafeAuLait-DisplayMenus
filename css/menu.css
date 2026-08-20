@@ -1,0 +1,186 @@
+/* Café au Lait — shared styles for every 16:9 menu board.
+   Each display links this file and tags <body> with its board name
+   (drinks | food | icecream); the handful of per-board differences
+   live in the "Per-board overrides" section at the bottom. */
+
+:root {
+    --paper: #e8d8c7;      /* wall behind the board */
+    --card: #f2dfcf;       /* the board itself */
+    --rule: #c9a27d;       /* border and section rules */
+    --ink: #2d1a12;        /* body text */
+    --ink-soft: #6b3a2a;   /* item descriptions */
+    --accent: #7a241b;     /* specials heading */
+}
+
+body {
+    margin: 0;
+    background: var(--paper);
+    font-family: "Outfit", sans-serif;
+}
+
+/* ---------- The board canvas ----------
+   Fixed 1600x900. Content that outgrows it overflows the frame
+   rather than scrolling, so check the render after adding items. */
+.menu {
+    width: 1600px;
+    aspect-ratio: 16/9;
+    margin: 20px auto;
+    background: var(--card);
+    border: 8px solid var(--rule);
+    box-sizing: border-box;
+    padding: 40px 60px;
+    position: relative;
+    color: var(--ink);
+}
+
+.logo {
+    text-align: center;
+    margin-top: -20px;
+    margin-bottom: 10px;
+}
+
+.image {
+    text-align: center;
+    margin-top: 40px;
+}
+.image img {
+    border-radius: 45px;
+}
+
+/* ---------- Column layouts ---------- */
+
+/* Three equal columns: drinks, ice cream. */
+.columns {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+}
+
+/* Two columns split by a vertical rule: food. */
+.layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+}
+.col {
+    padding: 0 40px;
+}
+.col:first-child {
+    border-right: 2px solid var(--rule);
+    padding-left: 0;
+}
+.col:last-child {
+    padding-right: 0;
+}
+
+/* ---------- Section headings ---------- */
+.section h2,
+.section-side h2 {
+    font-size: 31px;
+    border-bottom: 2px solid var(--rule);
+    padding-bottom: 8px;
+    margin: 0 0 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+/* The ice cream board's side columns declared `margin: 30 0 10px`, which is
+   invalid CSS (unitless 30), so browsers fell back to the default h2 margin
+   of 0.83em. Spelled out here to keep that board's spacing unchanged. */
+.section-side h2 {
+    margin: 0.83em 0;
+}
+
+/* A second heading further down the same column. */
+.section h2.stacked {
+    margin-top: 25px;
+}
+
+.specials h3 {
+    color: var(--accent);
+    font-size: 31px;
+    border-bottom: 2px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+/* Size labels sitting flush right in a heading. */
+.sizes {
+    font-size: 21px;
+    font-weight: normal;
+    letter-spacing: 0.05em;
+}
+
+/* ---------- Menu items ---------- */
+.item {
+    display: flex;
+    justify-content: space-between;
+    padding: 7px 0;
+    font-size: 29px;
+}
+.item-name {
+    font-weight: normal;
+    text-transform: capitalize;
+}
+.item-price {
+    white-space: nowrap;
+    margin-left: 20px;
+    font-size: 27px;
+}
+
+/* Ingredients or add-ons; goes after the .item it describes. */
+.item-desc {
+    font-size: 19px;
+    text-transform: capitalize;
+    color: var(--ink-soft);
+    margin: 0 0 7px 0;
+    letter-spacing: 0.03em;
+}
+
+.small {
+    font-size: 21px;
+}
+
+/* ---------- Footer strip ---------- */
+.footer {
+    position: absolute;
+    left: 40px;
+    right: 40px;
+    bottom: 25px;
+    text-align: center;
+    border-top: 2px solid var(--rule);
+    padding-top: 15px;
+    font-size: 25px;
+}
+
+/* ---------- Per-board overrides ---------- */
+
+/* Drinks: heavier footer rule, tighter to the text. */
+body.drinks .footer {
+    border-top-width: 5px;
+    padding-top: 5px;
+}
+
+/* Food: stacked sections, and items whose name and price differ in size. */
+body.food .section {
+    margin-bottom: 30px;
+}
+body.food .item {
+    align-items: baseline;
+    padding: 8px 0;
+}
+
+/* Smoothies: few items per column, so air them out to fill the canvas. */
+body.smoothies .item {
+    padding: 33px 0;
+}
+
+/* Ice cream: logo sits higher, finer print on descriptions. */
+body.icecream .logo {
+    margin-top: -10px;
+}
+body.icecream .item-desc {
+    font-size: 17px;
+}
